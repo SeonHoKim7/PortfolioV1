@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace = "~{fragments/common :: head('게시글 작성')}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" th:replace="~{fragments/common :: menu}"></nav>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">게시글 등록</h2>
+    <form id="form">
+      <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력해 주세요." required>
+      </div>
+<!--      <div class="mb-3">-->
+<!--        <label for="writer" class="form-label">작성자</label>-->
+<!--        <input type="text" id="writer" name="writer" class="form-control" placeholder="작성자를 입력해 주세요." required>-->
+<!--      </div>-->
+      <div class="mb-3">
+        <label for="content" class="form-label">내용</label>
+        <textarea id="content" name="content" rows="5" class="form-control" placeholder="게시글 내용을 입력해 주세요." required></textarea>
+      </div>
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button type="button" class="btn btn-primary" onclick="goList()">목록으로</button>
+        <button type="button" class="btn btn-primary" onclick="save()">등록</button>
+      </div>
+
+<!--    게시글 수정 시 사용 -->
+      <input type="hidden" id="boardId" th:if="${board != null}" th:value="${board.id}" />
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script th:inline = "javascript">
+    /**
+     * 유효성 검사
+     */
+    function isValid() {
+
+      const form = document.getElementById('form');
+
+      if (!form.title.value.trim()) {
+        alert('제목을 입력해 주세요.');
+        form.title.value = '';
+        form.title.focus();
+        return false;
+      }
+
+      // if (!form.writer.value.trim()) {
+      //   alert('작성자를 입력해 주세요.');
+      //   form.writer.value = '';
+      //   form.writer.focus();
+      //   return false;
+      // }
+
+      if (!form.content.value.trim()) {
+        alert('내용을 입력해 주세요.');
+        form.content.value = '';
+        form.content.focus();
+        return false;
+      }
+
+      return true;
+    }
+
+    /**
+     * 게시글 등록(생성 or 수정 동적 처리)
+     */
+    function save() {
+
+      if ( !isValid() ) {
+        return false;
+      }
+
+      const hidden = document.getElementById('boardId');
+      const parsedId = hidden ? hidden.value : null;
+
+      const uri    = parsedId ? `/api/board/${parsedId}` : '/api/board';
+      const method = parsedId ? 'PATCH'              : 'POST';
+
+      fetch(uri, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: form.title.value,
+          content: form.content.value,
+          deleteYn: 'N'
+        })
+      })
+              .then(res => {
+                if (!res.ok) throw new Error();
+                alert(parsedId ? '수정되었습니다.' : '저장되었습니다.');
+                goList();
+              })
+              .catch(() => alert('오류가 발생하였습니다.'));
+    }
+
+    /**
+     * 목록으로
+     */
+    function goList() {
+      const queryString = window.location.search;
+      const defaultQueryString = queryString && queryString !== '' ? queryString : '?page=1&boardPerPage=10&pageSize=10&searchType=&keyword=';
+
+      window.location.href = '/board/list' + defaultQueryString;
+    }
+
+  </script>
+</body>
+</html>

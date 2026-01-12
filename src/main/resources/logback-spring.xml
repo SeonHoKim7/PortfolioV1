@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+    <!-- Appenders(로그를 어디에 출력하는지) -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 출력 할 로그의 형식 -->
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>%d %5p [%c] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>%d %5p %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logger -->
+    <!-- 패키지의 로그-->
+    <logger name="com.example" level="DEBUG" appender-ref="console" />
+    <!-- 실행된 SQL 쿼리만 출력-->
+    <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
+    <!-- 쿼리 결과(ResultSet)까지 출력-->
+    <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />
+
+    <!-- Root Logger -->
+    <root level="INFO">
+        <appender-ref ref="console" />
+    </root>
+</configuration>
