@@ -1,17 +1,13 @@
 package com.example.PortfolioV1.user.controller;
 
 import com.example.PortfolioV1.user.dto.MemberDto;
-import com.example.PortfolioV1.user.entity.Member;
 import com.example.PortfolioV1.user.service.MemberService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.swing.*;
 
 @Slf4j
 @Controller
@@ -21,8 +17,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     // 회원가입
 
@@ -32,7 +26,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String joinMember(@ModelAttribute MemberDto memberDto, BindingResult bindingResult) {
+    public String joinMember(@ModelAttribute MemberDto memberDto) {
 
         log.info("memberDto: {}", memberDto);
 
@@ -64,10 +58,12 @@ public class MemberController {
 //        return "member/login";
 //    }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute("member");
-
-        return "redirect:/";
-    }
+    /* 로그아웃은 Spring Security의 LogoutFilter가 가로채서 처리.
+    *  로그아웃, 세션 무효화는 Spring Security 내부에서 처리로 맡김. */
+//    @GetMapping("/logout")
+//    public String logout(HttpSession session) {
+//        session.removeAttribute("member");
+//
+//        return "redirect:/";
+//    }
 }
