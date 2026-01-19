@@ -36,7 +36,7 @@ Spring Boot와 JPA, MyBatis를 활용하여 게시글과 댓글의 CRUD 기능�
 
 ### 회원 관리
 + **회원가입** : BCryptPasswordEncoder를 활용하여 비밀번호를 암호화 하여 DB에 반영
-+ ![ERD](memberPassword.png)
+![ERD](memberPassword.png)
   
 + **로그인** : UserDetails 인터페이스를 활용하여 작성자(사용자) 인증(Authentication) 처리
   
