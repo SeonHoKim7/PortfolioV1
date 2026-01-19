@@ -1,5 +1,8 @@
 # Spring-boot Board App
 
+(시연 영상 링크)
+https://share.vidyard.com/watch/yq5GEsppKx3d4Nm6BX61mv
+
 <br></br>
 ## 프로젝트 개요
 
