@@ -57,6 +57,11 @@ Spring Boot와 JPA, MyBatis를 활용하여 게시글과 댓글의 CRUD 기능�
 
 + **댓글 리스트 조회** : 게시글과 페이징 로직이 동일하고, 마찬가지로 조회 로직의 확장 가능성을 고려해 동일하게 MyBatis 기반으로 처리
 
+### Restful 설계 및 비동기 API 처리
++ 게시글 및 댓글을 하나의 자원(Resource)으로 정의하고 URI는 자원을 식별, HTTP Method는 행위를 표현하도록 설계
+
++ 비동기 요청을 통해 페이지 리로드 없이 게시글 및 댓글 생성·수정·삭제 처리. 비동기 요청의 결과는 HTTP 상태 코드를 기준으로 판단하여 GlobalExceptionHandler를 통해 표준화 된 ErrorResponse(JSON)을 반환.
+
 <br></br>
 ## 프로젝트 구조
 ```text
