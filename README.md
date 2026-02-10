@@ -1,5 +1,8 @@
 # Spring-boot Board App
 
+(배포 링크 - Render) <- 다만 15분 이상 미사용 시 Sleep이 발생하여 시연 영상 링크를 남겨두었습니다.
+https://my-spring-board.onrender.com/
+
 (시연 영상 링크)
 https://share.vidyard.com/watch/yq5GEsppKx3d4Nm6BX61mv
 
