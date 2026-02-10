@@ -63,6 +63,18 @@ Spring Boot와 JPA, MyBatis를 활용하여 게시글과 댓글의 CRUD 기능�
 + 비동기 요청을 통해 페이지 리로드 없이 게시글 및 댓글 생성·수정·삭제 처리. 비동기 요청의 결과는 HTTP 상태 코드를 기준으로 판단하여 GlobalExceptionHandler를 통해 표준화 된 ErrorResponse(JSON)을 반환.
 
 <br></br>
+## 주요 기술적 의사 결정 및 문제 해결 과정
+
+### 회원 도메인
++ **Case 1** : 기존 전통적인 회원가입 과정에서 DB로 회원의 암호를 저장 -> 평문 상태의 비밀번호가 그대로 노출 -> 관리자에게 노출되거나 DB 유출 시에 대한 최소한의 예방책으로 BCryptPasswordEncoder 도입하였습니다.
+
++ **Case 2** : JPQL로 쿼리문을 작성했을 때의 생산성 저하(코드 작성의 증가) 및 문자열 쿼리문으로 인해 컴파일 시점에서 오타와 같은 문제 -> 복잡한 통계 쿼리나 다수 테이블의 조인 상황이 아닌, findByUserid 등과 같은 단순 쿼리문을 사용하는 상황 -> public interface MemberRepository extends JpaRepository<Member, Long> 코드를 통해 JPA Query Method 를 사용하였습니다.
+
++ **Case 3** : JPA의 지연 로딩(Lazy Loading) 전략 사용 시, 실제 엔티티 대신 가짜 객체 프록시(Proxy)를 참조할 때 이때의 프록시 객체는 내부 필드 값이 비어있는(null) 상태일 수 있음 -> 자신의 게시글 삭제 권한에 대한 실패(equals시 false 반환으로 인한)라는 잠재적 문제를 예방하기 위해 식별자(PK)인 id필드로 한정했습니다.
+
+### 
+
+<br></br>
 ## 프로젝트 구조
 ```text
 
