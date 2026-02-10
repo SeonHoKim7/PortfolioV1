@@ -1,6 +1,6 @@
 spring:
   config:
-    import: application-secret.yml
+    -optional import: application-secret.yml
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: ${DB_URL}
