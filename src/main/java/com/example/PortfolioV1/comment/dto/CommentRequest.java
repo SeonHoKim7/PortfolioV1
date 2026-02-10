@@ -1,5 +1,7 @@
 package com.example.PortfolioV1.comment.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +12,10 @@ import lombok.NoArgsConstructor;
 public class CommentRequest {
 
     private Long id; // 댓글 번호(PK)
+
+    @NotNull(message = "게시글이 존재해야 합니다.")
     private Long boardId; // 게시글 번호(FK)
+
     private String commentContent; // 댓글 내용
     private String writer; // 댓글 작성자
 

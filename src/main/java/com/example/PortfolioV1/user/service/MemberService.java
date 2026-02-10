@@ -1,5 +1,7 @@
 package com.example.PortfolioV1.user.service;
 
+import com.example.PortfolioV1.exception.CustomException;
+import com.example.PortfolioV1.exception.ErrorCode;
 import com.example.PortfolioV1.user.dto.MemberDto;
 import com.example.PortfolioV1.user.entity.Member;
 import com.example.PortfolioV1.user.repository.MemberRepository;
@@ -28,8 +30,8 @@ public class MemberService {
     public Member joinMember(MemberDto memberDto) {
 
         Optional<Member> checkedMember = memberRepository.findByUserid(memberDto.getUserid());
-        if (memberRepository.findByUserid(memberDto.getUserid()).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        if (checkedMember.isPresent()) {
+            throw new CustomException(ErrorCode.DUPLICATE_USER_ID);
         }
 
         Member member = Member.builder()

@@ -53,8 +53,12 @@ public class CommentApiController {
     @PatchMapping("/board/{boardId}/comments/{id}")
     public CommentResponse updateComment(@PathVariable("boardId") final Long boardId,
                                          @PathVariable("id") final Long id,
-                                         @RequestBody final CommentRequest params) {
-        commentService.updateComment(params);
+                                         @RequestBody final CommentRequest params,
+                                         @AuthenticationPrincipal UserDetails userDetails) {
+
+        String currentUser = userDetails.getUsername();
+
+        commentService.updateComment(id, params, currentUser);
 
         return commentService.findCommentById(id);
     }

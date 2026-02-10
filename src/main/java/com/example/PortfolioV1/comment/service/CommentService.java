@@ -4,6 +4,8 @@ import com.example.PortfolioV1.comment.dto.CommentSearchDto;
 import com.example.PortfolioV1.comment.model.CommentMapper;
 import com.example.PortfolioV1.comment.dto.CommentRequest;
 import com.example.PortfolioV1.comment.dto.CommentResponse;
+import com.example.PortfolioV1.exception.CustomException;
+import com.example.PortfolioV1.exception.ErrorCode;
 import com.example.PortfolioV1.paging.Pagination;
 import com.example.PortfolioV1.paging.PagingParams;
 import com.example.PortfolioV1.paging.PagingResponse;
@@ -56,7 +58,19 @@ public class CommentService {
      * @return PK
      */
     @Transactional
-    public Long updateComment(final CommentRequest params) {
+    public Long updateComment(final Long id, final CommentRequest params,
+                              final String currentUser) {
+
+        CommentResponse comment = commentMapper.findById(id);
+
+        if (comment == null) {
+            throw new CustomException(ErrorCode.COMMENT_NOT_FOUND);
+        }
+
+        if (!comment.getWriter().equals(currentUser)) {
+            throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
+        }
+
         commentMapper.update(params);
         return params.getId();
     }
